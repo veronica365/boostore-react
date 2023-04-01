@@ -6,6 +6,7 @@ export default function Book({ book }) {
     <div>
       <h3>{book.title}</h3>
       <p>{book.author}</p>
+      <button type="button">Remove</button>
     </div>
   );
 }
