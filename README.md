@@ -70,8 +70,8 @@ Clone this repository to your desired folder:
 
 ```sh
   cd your-desired-folder
-  git clone git@github.com:veronica365/bookstore-react.git
-  open the repo folder `bookstore-react`
+  git clone git@github.com:veronica365/boostore-react.git
+  open the repo folder `boostore-react`
 ```
 
 ### Install
@@ -153,7 +153,7 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 Contributions, issues, and feature requests are welcome!
 
-Feel free to check the [issues page](https://github.com/veronica365/bookstore-react/issues).
+Feel free to check the [issues page](https://github.com/veronica365/boostore-react/issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
