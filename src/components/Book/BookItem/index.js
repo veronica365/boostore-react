@@ -7,14 +7,14 @@ export default function Book({ book }) {
     <div>
       <h3>{book.title}</h3>
       <p>{book.author}</p>
-      <BookRemove id={book.item_id} />
+      <BookRemove id={book.itemId} />
     </div>
   );
 }
 
 Book.propTypes = {
   book: PropTypes.shape({
-    item_id: PropTypes.string.isRequired,
+    itemId: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     author: PropTypes.string.isRequired,
   }).isRequired,

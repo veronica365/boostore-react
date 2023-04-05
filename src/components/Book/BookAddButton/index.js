@@ -12,7 +12,7 @@ export default function BookAddButton({
   let lastBookId = useSelector((store) => store.books.books);
   const handleAdd = (e) => {
     if (!title?.trim() || !author?.trim()) return;
-    lastBookId = lastBookId[lastBookId.length - 1]?.item_id || 'item0';
+    lastBookId = lastBookId[lastBookId.length - 1]?.itemId || 'item0';
     lastBookId = lastBookId.replace('item', '');
     lastBookId = lastBookId && parseInt(lastBookId, 10);
     lastBookId = `item${lastBookId + 1}`;
