@@ -1,10 +1,9 @@
 import { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { addBook } from '../../../redux/books/booksSlice';
+import { useSelector } from 'react-redux';
+import BookAddButton from '../BookAddButton';
 
 export default function NewBook() {
   const [state, setState] = useState({});
-  const dispatch = useDispatch();
   let lastBookId = useSelector((store) => store.books.books);
   lastBookId = lastBookId[lastBookId.length - 1]?.item_id || 'item0';
   lastBookId = lastBookId.replace('item', '');
@@ -15,11 +14,6 @@ export default function NewBook() {
   };
   const onSubmit = (e) => {
     e.preventDefault();
-    if (!state.title?.trim() || !state.author?.trim()) return;
-    const newBook = { ...state, category: 'Fiction', item_id: lastBookId };
-    dispatch(addBook(newBook));
-    e.target.elements.title.value = '';
-    e.target.elements.author.value = '';
   };
   return (
     <div>
@@ -39,7 +33,12 @@ export default function NewBook() {
           placeholder="Author"
           defaultValue={state.author}
         />
-        <button type="submit">Add Book</button>
+        <BookAddButton
+          title={state.title}
+          author={state.author}
+          category="Fiction"
+          lastBookId={lastBookId}
+        />
       </form>
     </div>
   );
