@@ -16,8 +16,8 @@ export default function BookAddButton({
         item_id: lastBookId,
       }),
     );
-    e.target.parent.elements.title.value = '';
-    e.target.parent.elements.author.value = '';
+    e.target.parentElement.elements.title.value = '';
+    e.target.parentElement.elements.author.value = '';
   };
   return (
     <button type="button" onClick={handleAdd}>
@@ -25,9 +25,13 @@ export default function BookAddButton({
     </button>
   );
 }
+BookAddButton.defaultProps = {
+  title: '',
+  author: '',
+};
 BookAddButton.propTypes = {
   lastBookId: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  author: PropTypes.string.isRequired,
+  title: PropTypes.string,
+  author: PropTypes.string,
   category: PropTypes.string.isRequired,
 };
