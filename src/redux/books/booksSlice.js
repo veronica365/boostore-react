@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import axios from 'axios';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
@@ -11,8 +10,8 @@ export const getBooks = createAsyncThunk(
     try {
       const { data } = await axios.get(`${BookstoreAPI}/books`);
       if (data) {
-        const books = Object.entries(data).map(([item_id, book]) => ({
-          item_id,
+        const books = Object.entries(data).map(([itemId, book]) => ({
+          itemId,
           ...book[0],
         }));
         return books;
@@ -29,7 +28,10 @@ export const postBook = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       await axios.post(`${BookstoreAPI}/books`, payload);
-      return payload;
+      const { title, author, category } = payload;
+      return {
+        title, author, category, itemId: payload.item_id,
+      };
     } catch (error) {
       return thunkAPI.rejectWithValue('Something went wrong');
     }
@@ -93,7 +95,7 @@ const bookSlice = createSlice({
     [removeBook.fulfilled]: (state, { payload }) => ({
       ...state,
       isRemoving: false,
-      books: state.books.filter((book) => book.item_id !== payload),
+      books: state.books.filter((book) => book.itemId !== payload),
     }),
     [removeBook.rejected]: (state) => ({
       ...state,

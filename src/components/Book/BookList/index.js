@@ -21,7 +21,7 @@ export default function BookList() {
   return (
     <div>
       {books.map((book) => (
-        <BookItem key={book.item_id} book={book} />
+        <BookItem key={book.itemId} book={book} />
       ))}
       <NewBook />
     </div>
