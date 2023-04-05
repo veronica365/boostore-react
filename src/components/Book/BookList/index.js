@@ -5,12 +5,19 @@ import NewBook from '../NewBook';
 import { getBooks } from '../../../redux/books/booksSlice';
 
 export default function BookList() {
-  const books = useSelector((store) => store.books.books);
+  const { books, isLoading } = useSelector((store) => store.books);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getBooks());
   }, [dispatch]);
 
+  if (isLoading) {
+    return (
+      <div className="loading">
+        <h1>Loading books ...</h1>
+      </div>
+    );
+  }
   return (
     <div>
       {books.map((book) => (
