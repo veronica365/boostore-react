@@ -15,28 +15,20 @@ export const getBooks = createAsyncThunk(
     }
   },
 );
+export const postBook = createAsyncThunk(
+  'books/postBook',
+  async (payload, thunkAPI) => {
+    try {
+      const { data } = await axios.post(`${BookstoreAPI}/books`, payload);
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue('Something went wrong');
+    }
+  },
+);
 
 const initialState = {
-  books: [
-    {
-      item_id: 'item1',
-      title: 'The Great Gatsby',
-      author: 'John Smith',
-      category: 'Fiction',
-    },
-    {
-      item_id: 'item2',
-      title: 'Anna Karenina',
-      author: 'Leo Tolstoy',
-      category: 'Fiction',
-    },
-    {
-      item_id: 'item3',
-      title: 'The Selfish Gene',
-      author: 'Richard Dawkins',
-      category: 'Nonfiction',
-    },
-  ],
+  books: [],
 };
 
 const bookSlice = createSlice({
@@ -60,9 +52,22 @@ const bookSlice = createSlice({
     [getBooks.fulfilled]: (state, { payload }) => ({
       ...state,
       isLoading: false,
-      books: payload,
+      books: payload || state.books,
     }),
     [getBooks.rejected]: (state) => ({
+      ...state,
+      isLoading: false,
+    }),
+    [postBook.pending]: (state) => ({
+      ...state,
+      isLoading: true,
+    }),
+    [postBook.fulfilled]: (state, { payload }) => ({
+      ...state,
+      isLoading: false,
+      bookss: payload || state.books,
+    }),
+    [postBook.rejected]: (state) => ({
       ...state,
       isLoading: false,
     }),
