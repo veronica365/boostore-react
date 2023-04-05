@@ -4,17 +4,20 @@ import BookAddButton from '../BookAddButton';
 
 export default function NewBook() {
   const [state, setState] = useState({});
-  let lastBookId = useSelector((store) => store.books.books);
-  lastBookId = lastBookId[lastBookId.length - 1]?.item_id || 'item0';
-  lastBookId = lastBookId.replace('item', '');
-  lastBookId = lastBookId && parseInt(lastBookId, 10);
-  lastBookId = `item${lastBookId + 1}`;
+  const { isCreating } = useSelector((store) => store.books);
   const handleChange = (e) => {
     setState((prev) => ({ ...prev, [e.target.name]: e.target.value.trim() }));
   };
   const onSubmit = (e) => {
     e.preventDefault();
   };
+  if (isCreating) {
+    return (
+      <div className="loading">
+        <h1>Adding book...</h1>
+      </div>
+    );
+  }
   return (
     <div>
       <h2>Add New Book</h2>
@@ -37,7 +40,7 @@ export default function NewBook() {
           title={state.title}
           author={state.author}
           category="Fiction"
-          lastBookId={lastBookId}
+          handleResetForm={() => setState({})}
         />
       </form>
     </div>

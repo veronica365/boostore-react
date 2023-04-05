@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import axios from 'axios';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
@@ -9,18 +10,38 @@ export const getBooks = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const { data } = await axios.get(`${BookstoreAPI}/books`);
+      if (data) {
+        const books = Object.entries(data).map(([item_id, book]) => ({
+          item_id,
+          ...book[0],
+        }));
+        return books;
+      }
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue('Something went wrong');
     }
   },
 );
+
 export const postBook = createAsyncThunk(
   'books/postBook',
   async (payload, thunkAPI) => {
     try {
-      const { data } = await axios.post(`${BookstoreAPI}/books`, payload);
-      return data;
+      await axios.post(`${BookstoreAPI}/books`, payload);
+      return payload;
+    } catch (error) {
+      return thunkAPI.rejectWithValue('Something went wrong');
+    }
+  },
+);
+
+export const removeBook = createAsyncThunk(
+  'books/removeBook',
+  async (payload, thunkAPI) => {
+    try {
+      await axios.delete(`${BookstoreAPI}/books/${payload}`);
+      return payload;
     } catch (error) {
       return thunkAPI.rejectWithValue('Something went wrong');
     }
@@ -29,21 +50,15 @@ export const postBook = createAsyncThunk(
 
 const initialState = {
   books: [],
+  isLoading: false,
+  isCreating: false,
+  isRemoving: false,
 };
 
 const bookSlice = createSlice({
   name: 'books',
   initialState,
-  reducers: {
-    addBook: (state, action) => {
-      const newState = { ...state };
-      newState.books = state.books.push(action.payload);
-    },
-    removeBook: (state, action) => ({
-      ...state,
-      books: state.books.filter((book) => book.item_id !== action.payload),
-    }),
-  },
+  reducers: {},
   extraReducers: {
     [getBooks.pending]: (state) => ({
       ...state,
@@ -60,19 +75,31 @@ const bookSlice = createSlice({
     }),
     [postBook.pending]: (state) => ({
       ...state,
-      isLoading: true,
+      isCreating: true,
     }),
     [postBook.fulfilled]: (state, { payload }) => ({
       ...state,
-      isLoading: false,
-      bookss: payload || state.books,
+      isCreating: false,
+      books: [...state.books, payload],
     }),
     [postBook.rejected]: (state) => ({
       ...state,
-      isLoading: false,
+      isCreating: false,
+    }),
+    [removeBook.pending]: (state, { meta: { arg: isRemoving } }) => ({
+      ...state,
+      isRemoving,
+    }),
+    [removeBook.fulfilled]: (state, { payload }) => ({
+      ...state,
+      isRemoving: false,
+      books: state.books.filter((book) => book.item_id !== payload),
+    }),
+    [removeBook.rejected]: (state) => ({
+      ...state,
+      isRemoving: false,
     }),
   },
 });
 
-export const { addBook, removeBook } = bookSlice.actions;
 export default bookSlice.reducer;

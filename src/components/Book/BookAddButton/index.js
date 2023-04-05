@@ -1,15 +1,23 @@
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
-import { addBook } from '../../../redux/books/booksSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { postBook } from '../../../redux/books/booksSlice';
 
 export default function BookAddButton({
-  lastBookId, title, author, category,
+  title,
+  author,
+  category,
+  handleResetForm,
 }) {
   const dispatch = useDispatch();
+  let lastBookId = useSelector((store) => store.books.books);
   const handleAdd = (e) => {
     if (!title?.trim() || !author?.trim()) return;
+    lastBookId = lastBookId[lastBookId.length - 1]?.item_id || 'item0';
+    lastBookId = lastBookId.replace('item', '');
+    lastBookId = lastBookId && parseInt(lastBookId, 10);
+    lastBookId = `item${lastBookId + 1}`;
     dispatch(
-      addBook({
+      postBook({
         title,
         author,
         category,
@@ -18,6 +26,7 @@ export default function BookAddButton({
     );
     e.target.parentElement.elements.title.value = '';
     e.target.parentElement.elements.author.value = '';
+    handleResetForm();
   };
   return (
     <button type="button" onClick={handleAdd}>
@@ -30,8 +39,8 @@ BookAddButton.defaultProps = {
   author: '',
 };
 BookAddButton.propTypes = {
-  lastBookId: PropTypes.string.isRequired,
   title: PropTypes.string,
   author: PropTypes.string,
   category: PropTypes.string.isRequired,
+  handleResetForm: PropTypes.func.isRequired,
 };
