@@ -30,7 +30,7 @@ export default function BookAddButton({
   };
   return (
     <button type="button" onClick={handleAdd}>
-      Add
+      ADD BOOK
     </button>
   );
 }
