@@ -19,14 +19,15 @@ export default function NewBook() {
     );
   }
   return (
-    <div>
-      <h2>Add New Book</h2>
+    <div className="new-book">
+      <h2>ADD NEW BOOK</h2>
       <form onSubmit={onSubmit}>
         <input
           type="text"
           name="title"
           onChange={handleChange}
           placeholder="Book title"
+          autoComplete="off"
           defaultValue={state.title}
         />
         <input
@@ -34,6 +35,7 @@ export default function NewBook() {
           name="author"
           onChange={handleChange}
           placeholder="Author"
+          autoComplete="off"
           defaultValue={state.author}
         />
         <BookAddButton
