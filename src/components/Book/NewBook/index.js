@@ -13,7 +13,7 @@ export default function NewBook() {
   };
   if (isCreating) {
     return (
-      <div className="loading">
+      <div className="loading pop">
         <h1>Adding book...</h1>
       </div>
     );
@@ -41,7 +41,7 @@ export default function NewBook() {
         <BookAddButton
           title={state.title}
           author={state.author}
-          category="Fiction"
+          category="Religion"
           handleResetForm={() => setState({})}
         />
       </form>
