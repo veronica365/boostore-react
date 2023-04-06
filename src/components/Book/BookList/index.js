@@ -13,7 +13,7 @@ export default function BookList() {
 
   if (isLoading) {
     return (
-      <div className="loading">
+      <div className="loading pop">
         <h1>Loading books ...</h1>
       </div>
     );
